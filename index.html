@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>P2P Video</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<button id="btnDial">Dial</button>
+
+<div class="video_container">
+    <h1>Local Video</h1>
+    <video id="local" muted autoplay playsinline></video>
+</div>
+
+<div class="video_container">
+    <h1>Remote Video</h1>
+    <video id="remote" autoplay playsinline></video>
+</div>
+
+</body>
+<script src="js/paho-mqtt-min.js" type="text/javascript"></script>
+<script src="js/main.js" defer></script>
+</html>
