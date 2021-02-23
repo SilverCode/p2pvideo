@@ -2,6 +2,11 @@ const client_id = 'client_' + Math.trunc(Math.random() * 1000);
 let mqtt_client;
 let rtc_client;
 
+const mqtt_config = {
+    server: "192.168.1.30",
+    port: 9002,
+    useSSL: true
+}
 function onConnectionLost(responseObject) {
     if (responseObject.errorCode !== 0) {
         console.log("Connection lost: ", responseObject);
@@ -111,14 +116,14 @@ function receiveAnswer(answer) {
 }
 
 function initMQTT() {
-    mqtt_client = new Paho.MQTT.Client('192.168.1.30', 9002, client_id);
+    mqtt_client = new Paho.MQTT.Client(mqtt_config.server, mqtt_config.port, client_id);
 
     mqtt_client.onConnectionLost = onConnectionLost;
     mqtt_client.onMessageArrived = onMessageArrived;
 
     mqtt_client.connect({
         onSuccess: onConnect,
-        useSSL: true
+        useSSL: mqtt_config.useSSL
     });
 }
 
