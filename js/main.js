@@ -7,6 +7,7 @@ const mqtt_config = {
     port: 9002,
     useSSL: true
 }
+
 function onConnectionLost(responseObject) {
     if (responseObject.errorCode !== 0) {
         console.log("Connection lost: ", responseObject);
@@ -91,8 +92,13 @@ function receiveOffer(offer) {
     rtc_client = new RTCPeerConnection();
 
     rtc_client.onconnectionstatechange = () => {
+        console.log(rtc_client.connectionState);
         if (rtc_client.connectionState === "connected") {
             console.log("Connected");
+        } else if (rtc_client.connectionState === "disconnected") {
+            let remote_video = document.getElementById("remote");
+            remote_video.srcObject = null;
+            remote_video.style.visibility = 'hidden';
         }
     }
     rtc_client.ontrack = handleTrack;
@@ -130,8 +136,13 @@ function initMQTT() {
 function dial() {
     rtc_client = new RTCPeerConnection();
     rtc_client.onconnectionstatechange = (e) => {
+        console.log(rtc_client.connectionState);
         if (rtc_client.connectionState === "connected") {
             console.log("Connected");
+        } else if (rtc_client.connectionState === "disconnected") {
+            let remote_video = document.getElementById("remote");
+            remote_video.srcObject = null;
+            remote_video.style.visibility = 'hidden';
         }
     }
     rtc_client.onicecandidate = e => {
@@ -154,6 +165,7 @@ function handleTrack(trackEvent) {
         remote_video.srcObject = new MediaStream();
     }
     remote_video.srcObject.addTrack(trackEvent.track);
+    remote_video.style.visibility = 'visible';
 }
 
 function initWebRTC() {
